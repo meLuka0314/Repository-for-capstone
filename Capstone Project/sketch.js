@@ -5,10 +5,12 @@
 
 let gameStarted = false;
 let puck;
+let ball;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   puck = new Puck();
+  ball = new Ball();
   if (!gameStarted) {
     showMenu();
   }
@@ -19,6 +21,7 @@ function draw() {
     drawField();
     puck.display();
     puck.move();
+    ball.display();
   }
 }
 
@@ -73,7 +76,7 @@ class Puck {
 
   display() {
     fill(200, 0, 0);
-    strokeWeight(1);
+    strokeWeight(4);
     ellipse(this.x, this.y, this.diameter);
   }
 
@@ -94,14 +97,48 @@ class Puck {
       this.y += this.speed;
     }
   }
+}
 
+class Ball {
+  constructor() {
+    this.x = width/2;
+    this.y = height/2;
+    this.diameter = 40;
+    this.speed = 4;
+    this.vx = 0; //velocity x
+    this.vy = 0; //velocity y
+  }
+  
+  display() {
+    fill(0, 0, 200);
+    strokeWeight(1);
+    ellipse(this.x, this.y, this.diameter);
+  }
 
+  move() {
+    this.x += this.vx;
+    this.y += this.vy;
+  }
 
 
 
 
 
 }
+
+function checkCollision() {
+  
+}
+  
+
+
+
+
+
+
+
+
+
 
 
 
