@@ -105,8 +105,8 @@ class Ball {
     this.y = height/2;
     this.diameter = 40;
     this.speed = 4;
-    this.vx = 0; //velocity x
-    this.vy = 0; //velocity y
+    this.speedX = 0; 
+    this.speedY = 0; 
   }
   
   display() {
@@ -116,8 +116,7 @@ class Ball {
   }
 
   move() {
-    this.x += this.vx;
-    this.y += this.vy;
+
   }
 
 
