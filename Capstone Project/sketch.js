@@ -4,7 +4,7 @@
 //
 
 let gameStarted = false;
-let puck;
+let puck = 60;
 let ball;
 
 function setup() {
@@ -22,6 +22,7 @@ function draw() {
     puck.display();
     puck.move();
     ball.display();
+    ball.move();
   }
 }
 
@@ -104,9 +105,8 @@ class Ball {
     this.x = width/2;
     this.y = height/2;
     this.diameter = 40;
-    this.speed = 4;
-    this.speedX = 0; 
-    this.speedY = 0; 
+    this.speedX = 3; 
+    this.speedY = 3; 
   }
   
   display() {
@@ -116,28 +116,24 @@ class Ball {
   }
 
   move() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    if (this.x - this.diameter/2 <= 300) {
+      this.speedX *= -1;
+    }
+
+    if (this.x + this.diameter/2 >= width - 300) {
+      this.speedX *= -1;
+    }
+
+    if (this.y - this.diameter/2 <= 120) {
+      this.speedY *= -1;
+    }
+
+    if (this.y + this.diameter/2 >= height - 120) {
+      this.speedY *= -1;
+    }
 
   }
-
-
-
-
-
 }
-
-function checkCollision() {
-  
-}
-  
-
-
-
-
-
-
-
-
-
-
-
-
