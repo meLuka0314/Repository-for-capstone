@@ -72,7 +72,7 @@ class Puck {
     this.x = width/2;
     this.y = height/2;
     this.diameter = 60;
-    this.speed = 4;
+    this.speed = 6;
   }
 
   display() {
@@ -107,6 +107,7 @@ class Ball {
     this.diameter = 40;
     this.speedX = 3; 
     this.speedY = 3; 
+    this.dir = 0;
   }
   
   display() {
@@ -119,21 +120,32 @@ class Ball {
     this.x += this.speedX;
     this.y += this.speedY;
 
-    if (this.x - this.diameter/2 <= 300) {
-      this.speedX *= -1;
+    if (this.x - this.diameter/2 <= 300) { //if the ball is going past the left vertical line
+      this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
     }
 
-    if (this.x + this.diameter/2 >= width - 300) {
-      this.speedX *= -1;
+    if (this.x + this.diameter/2 >= width - 300) { //if the ball is going past the right vertical line
+      this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
     }
 
-    if (this.y - this.diameter/2 <= 120) {
-      this.speedY *= -1;
+    if (this.y - this.diameter/2 <= 120) { //if the ball is going past the top horizontal line
+      this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
     }
 
-    if (this.y + this.diameter/2 >= height - 120) {
-      this.speedY *= -1;
+    if (this.y + this.diameter/2 >= height - 120) { //if the ball is going past the bottom horizontal line
+      this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
     }
 
+
+    let d = dist(this.x, this.y, puck.x, puck.y); //distance between the ball and puck
+    let combinedRadius = this.diameter/2 + puck.diameter/2; //finds the combined radius which is 50
+
+    if (d <= combinedRadius) { //if
+      this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
+    }
+
+    if (d <= combinedRadius) { //
+      this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
+    }
   }
 }
