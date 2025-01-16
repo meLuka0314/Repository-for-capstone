@@ -19,6 +19,7 @@ function setup() {
 function draw() {
   if (gameStarted) {
     drawField();
+    Spectators();
     puck.display();
     puck.move();
     ball.display();
@@ -26,15 +27,31 @@ function draw() {
   }
 }
 
+function Spectators() {
+  fill(200, 0, 0);
+  strokeWeight(1);
+  for (let i = 0; i < 25; i++) {
+    let answer = int(Math.random(0,1));
+    if (answer === 0) {
+      ellipse(300 + 38 * i, height/10, 40);
+    }
+    if (answer === 1) {
+      Rectangle = rect(280 + 38 * i, height/10 - 20, 40);
+    }
+  }
+}
+
+
+
 //creates the menu
 function showMenu() {
   background(0);
   fill(255);
   textAlign(CENTER, CENTER);
   textSize(100);
-  text("Puck Soccer", width/2, 250);
+  text("Puck Soccer", width / 2, 250);
   textSize(30);
-  text("Press Enter to start", width/2, height/2 + 20);
+  text("Press Enter to start", width / 2, height / 2 + 20);
 }
 
 //when enter key is pressed gameStarted is true
@@ -54,25 +71,25 @@ function drawField() {
   rect(300, 120, width - 600, height - 240);
 
   //creates center line
-  line(width/2, 120, width/2, height - 120);
+  line(width / 2, 120, width / 2, height - 120);
 
   //creates cenetr circle
-  ellipse(width/2, height/2, 300);
-  
+  ellipse(width / 2, height / 2, 300);
+
   //creates goals 
-  rect(280, height/2 - 120, 20, 240);
-  rect(width - 300, height/2 - 120, 20, 240);
+  rect(280, height / 2 - 120, 20, 240);
+  rect(width - 300, height / 2 - 120, 20, 240);
 
   //creates center points
-  ellipse(width/2, height/2, 7, 7);
+  ellipse(width / 2, height / 2, 7, 7);
 }
 
 class Puck {
   constructor() {
-    this.x = width/2;
-    this.y = height/2;
+    this.x = width / 2;
+    this.y = height / 2;
     this.diameter = 60;
-    this.speed = 5;
+    this.speed = 4;
   }
 
   display() {
@@ -98,20 +115,24 @@ class Puck {
       this.y += this.speed;
     }
   }
+
+
 }
 
 class Ball {
   constructor() {
-    this.x = width/2;
-    this.y = height/2;
+    this.x = width / 2;
+    this.y = height / 2;
     this.diameter = 40;
-    this.speedX = 6; 
-    this.speedY = 6; 
+    this.speedX = 6;
+    this.speedY = 6;
+    this.bounceCooldown = 0;
+    this.position = this.x, this.y;
   }
-  
+
   display() {
     fill(0, 0, 200);
-    strokeWeight(1);
+    strokeWeight(0);
     ellipse(this.x, this.y, this.diameter);
   }
 
@@ -119,19 +140,24 @@ class Ball {
     this.x += this.speedX;
     this.y += this.speedY;
 
-    if (this.x - this.diameter/2 <= 300) { //if the ball is going past the left vertical line
+    this.speedX *= 0.99;
+    this.speedY *= 0.99;
+
+
+
+    if (this.x - this.diameter / 2 <= 300) { //if the ball is going past the left vertical line
       this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
     }
 
-    if (this.x + this.diameter/2 >= width - 300) { //if the ball is going past the right vertical line
+    if (this.x + this.diameter / 2 >= width - 300) { //if the ball is going past the right vertical line
       this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
     }
 
-    if (this.y - this.diameter/2 <= 120) { //if the ball is going past the top horizontal line
+    if (this.y - this.diameter / 2 <= 120) { //if the ball is going past the top horizontal line
       this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
     }
 
-    if (this.y + this.diameter/2 >= height - 120) { //if the ball is going past the bottom horizontal line
+    if (this.y + this.diameter / 2 >= height - 120) { //if the ball is going past the bottom horizontal line
       this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
     }
 
@@ -144,22 +170,42 @@ class Ball {
 
 
 
+    if (this.bounceCooldown === 0) {
+      let d = dist(this.x, this.y, puck.x, puck.y); //distance between the ball and puck
+      let combinedRadius = this.diameter / 2 + puck.diameter / 2; //finds the combined radius which is 50
 
-    let d = dist(this.x, this.y, puck.x, puck.y); //distance between the ball and puck
-    let combinedRadius = this.diameter/2 + puck.diameter/2; //finds the combined radius which is 50
+      if (puck.speed > 0) {
 
-    if (puck.speed > 0) {
-      
-      if (d <= combinedRadius+1) { //if
-        this.speedX *= -1;
-        this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
+        if (d <= combinedRadius) { //if
+          this.bounceCooldown = 5;
+          if (this.y <= puck.y - puck.diameter / 2) {
+            this.speedY *= -1;
+
+
+          } else {
+            this.speedX *= -1;
+            this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
+            if (this.speedX < 0) {
+              this.speedX -= 5;
+            }
+            if (this.speedY < 0) {
+              this.speedY -= 5;
+            }
+            if (this.speedX > 0) {
+              this.speedX += 5;
+            }
+            if (this.speedY > 0) {
+              this.speedY += 5;
+            }
+          }
+        }
+
       }
-
+    } else {
+      this.bounceCooldown --;
     }
-    
 
-    if (d <= combinedRadius) { //
-      //this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
-    }
+
+
   }
 }
