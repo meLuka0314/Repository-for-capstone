@@ -9,6 +9,7 @@ let ball;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  puck2 = new Puck2();
   puck = new Puck();
   ball = new Ball();
   if (!gameStarted) {
@@ -22,21 +23,28 @@ function draw() {
     Spectators();
     puck.display();
     puck.move();
+    puck2.display();
+    puck2.move();
     ball.display();
     ball.move();
   }
 }
 
 function Spectators() {
-  fill(200, 0, 0);
-  strokeWeight(1);
-  for (let i = 0; i < 25; i++) {
-    let answer = int(Math.random(0,1));
-    if (answer === 0) {
-      ellipse(300 + 38 * i, height/10, 40);
-    }
-    if (answer === 1) {
-      Rectangle = rect(280 + 38 * i, height/10 - 20, 40);
+
+  randomSeed(1);
+  for (let i = 0; i < 50; i++) {
+    let r = random(int(255));
+    let g = random(int(255));
+    let b = random(int(255));
+    if (random(100) < 50) {
+      random(fill(r, g, b));  
+      strokeWeight(1);
+      ellipse(20 + 38 * i, height/12, 40);
+    } else {
+      random(fill(r, g, b));  
+      strokeWeight(1);  
+      rect(0 + 38 * i, height/12 - 20, 40);  
     }
   }
 }
@@ -86,7 +94,7 @@ function drawField() {
 
 class Puck {
   constructor() {
-    this.x = width / 2;
+    this.x = width - 400;
     this.y = height / 2;
     this.diameter = 60;
     this.speed = 4;
@@ -112,6 +120,41 @@ class Puck {
     }
 
     if (keyIsDown(DOWN_ARROW)) {
+      this.y += this.speed;
+    }
+  }
+
+
+}
+
+class Puck2 {
+  constructor() {
+    this.x = width / 5;
+    this.y = height / 2;
+    this.diameter = 60;
+    this.speed = 4;
+  }
+
+  display() {
+    fill(0, 200, 0);
+    strokeWeight(4);
+    ellipse(this.x, this.y, this.diameter);
+  }
+
+  move() {
+    if (keyCode === a) {
+      this.x -= this.speed + 0.5;
+    }
+
+    if (keyCode === d) {
+      this.x += this.speed + 0.5;
+    }
+
+    if (keyCode === w) {
+      this.y -= this.speed;
+    }
+
+    if (keyCode === d) {
       this.y += this.speed;
     }
   }
