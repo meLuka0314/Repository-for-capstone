@@ -30,40 +30,57 @@ function draw() {
   }
 }
 
-function Spectators() {
-
-
-  randomSeed(1);
-  for (let i = 0; i < 50; i++) {
-    let r = random(int(255));
-    let g = random(int(255));
-    let b = random(int(255));
-    let space = random(-10,10);
-    
+function Spectator(x, y) {
+  let r = random(int(255));
+  let g = random(int(255));
+  let b = random(int(255));
 
     
 
-    //bottom
-    if (random(100) < 50) {
-      random(fill(r, g, b));  
-      strokeWeight(1);
-      for (let rows = 0; rows < 7; rows++) { //creates five rows of circle spectators
-        ellipse(20 + 38 * i, height - height/12, 25); //bottom
-        ellipse(20 + 38 * i, height/12, 25); //top      
-        ellipse(width/12 - rows * 30 - space, 20 + space + 38 * i, 23); //left
-        ellipse(width - width/12, 20 + 38 * i, 25); //right
-      } 
-    } else {
-      random(fill(r, g, b));  
-      strokeWeight(1);  
-      for (let rows = 0; rows < 5; rows++) {
-        rect(20 + 38 * i - 12.5, height - height/12, 25);  //bottom
-        rect(20 + 38 * i - 12.5, height/12, 25);  //top
-        rect(width/12 - rows * 30 - 12.5, 20 + space + 38 * i - 12.5, 25);   //left
-        rect(width - width/12, 20 + 38 * i, 30);   //right
-        }
-    }
+  //bottom
+  if (random(100) < 50) {
+    random(fill(r, g, b));  
+    strokeWeight(1);
+    ellipse(x + random(-3,3), y + random(-3,3), 15); //bottom
+
+  } else {
+    random(fill(r, g, b));  
+    strokeWeight(1);  
+    rect(x - 7.5 + random(-3,3), y - 7.5 + random(-3,3), 15);   //right
 }
+}
+
+function Spectators() {
+  randomSeed(1);
+  let spacing = 20;
+  let fieldLeft = 300;
+  let fieldRight = width - 300;
+  let fieldTop = 120;
+  let fieldBottom = height - 120;
+
+  for (let y = fieldTop - 40; y > 0; y -= spacing) {
+    for (let x = fieldLeft; x < fieldRight; x += spacing) {
+      Spectator(x, y);
+    }
+  }
+
+  for (let y = fieldBottom + 40; y < height; y += spacing) {
+    for (let x = fieldLeft; x < fieldRight; x += spacing) {
+      Spectator(x, y);
+    }
+  }
+
+  for (let x = fieldLeft - 80; x > 0; x -= spacing) {
+    for (let y = fieldTop; y < fieldBottom; y += spacing) {
+      Spectator(x, y);
+    }
+  }
+
+  for (let x = fieldRight + 80; x < width; x += spacing) {
+    for (let y = fieldTop; y < fieldBottom; y += spacing) {
+      Spectator(x, y);
+    }
+  }
 }
 
 
@@ -206,7 +223,9 @@ class Ball {
 
 
     if (this.x - this.diameter / 2 <= 300) { //if the ball is going past the left vertical line
-      this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
+      if (this.y - this.diameter/2 <= height - 300) {
+        this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
+      }
     }
 
     if (this.x + this.diameter / 2 >= width - 300) { //if the ball is going past the right vertical line
@@ -232,7 +251,10 @@ class Ball {
 
     if (this.bounceCooldown === 0) {
       let d = dist(this.x, this.y, puck.x, puck.y); //distance between the ball and puck
+      let d2 = dist(this.x, this.y, puck2.x, puck2.y); //distance between the ball and puck
+
       let combinedRadius = this.diameter / 2 + puck.diameter / 2; //finds the combined radius which is 50
+      let combinedRadius2 = this.diameter / 2 + puck2.diameter / 2; //finds the combined radius which is 50
 
       if (puck.speed > 0) {
 
@@ -268,4 +290,35 @@ class Ball {
 
 
   }
+    if (puck2.speed > 0) {
+
+      if (d <= combinedRadius2) { //if
+        this.bounceCooldown = 5;
+        if (this.y <= puck2.y - puck2.diameter / 2) {
+          this.speedY *= -1;
+
+
+        } else {
+          this.speedX *= -1;
+          this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
+          if (this.speedX < 0) {
+            this.speedX -= 5;
+          }
+          if (this.speedY < 0) {
+            this.speedY -= 5;
+          }
+          if (this.speedX > 0) {
+            this.speedX += 5;
+          }
+          if (this.speedY > 0) {
+            this.speedY += 5;
+          }
+        }
+
+  } else {
+    this.bounceCooldown --;
+  }
+}
+
+  
 }
