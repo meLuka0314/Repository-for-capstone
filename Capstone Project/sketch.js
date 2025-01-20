@@ -32,21 +32,38 @@ function draw() {
 
 function Spectators() {
 
+
   randomSeed(1);
   for (let i = 0; i < 50; i++) {
     let r = random(int(255));
     let g = random(int(255));
     let b = random(int(255));
+    let space = random(-10,10);
+    
+
+    
+
+    //bottom
     if (random(100) < 50) {
       random(fill(r, g, b));  
       strokeWeight(1);
-      ellipse(20 + 38 * i, height/12, 40);
+      for (let rows = 0; rows < 7; rows++) { //creates five rows of circle spectators
+        ellipse(20 + 38 * i, height - height/12, 25); //bottom
+        ellipse(20 + 38 * i, height/12, 25); //top      
+        ellipse(width/12 - rows * 30 - space, 20 + space + 38 * i, 23); //left
+        ellipse(width - width/12, 20 + 38 * i, 25); //right
+      } 
     } else {
       random(fill(r, g, b));  
       strokeWeight(1);  
-      rect(0 + 38 * i, height/12 - 20, 40);  
+      for (let rows = 0; rows < 5; rows++) {
+        rect(20 + 38 * i - 12.5, height - height/12, 25);  //bottom
+        rect(20 + 38 * i - 12.5, height/12, 25);  //top
+        rect(width/12 - rows * 30 - 12.5, 20 + space + 38 * i - 12.5, 25);   //left
+        rect(width - width/12, 20 + 38 * i, 30);   //right
+        }
     }
-  }
+}
 }
 
 
@@ -142,19 +159,19 @@ class Puck2 {
   }
 
   move() {
-    if (keyCode === a) {
+    if (keyIsDown(65)) {
       this.x -= this.speed + 0.5;
     }
 
-    if (keyCode === d) {
+    if (keyIsDown(68)) {
       this.x += this.speed + 0.5;
     }
 
-    if (keyCode === w) {
+    if (keyIsDown(87)) {
       this.y -= this.speed;
     }
 
-    if (keyCode === d) {
+    if (keyIsDown(83)) {
       this.y += this.speed;
     }
   }
