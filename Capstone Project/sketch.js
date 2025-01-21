@@ -4,8 +4,10 @@
 //
 
 let gameStarted = false;
-let puck = 60;
+let puck;
 let ball;
+let scoreLeft = 0;
+let scoreRight = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -21,6 +23,7 @@ function draw() {
   if (gameStarted) {
     drawField();
     Spectators();
+    displayScores();
     puck.display();
     puck.move();
     puck2.display();
@@ -30,6 +33,7 @@ function draw() {
   }
 }
 
+<<<<<<< Updated upstream
 function Spectator(x, y) {
   let r = random(int(255));
   let g = random(int(255));
@@ -47,8 +51,69 @@ function Spectator(x, y) {
     random(fill(r, g, b));  
     strokeWeight(1);  
     rect(x - 7.5 + random(-3,3), y - 7.5 + random(-3,3), 15);   //right
+=======
+function displayScores(){
+  fill(255);
+  textSize(50);
+  text(scoreLeft, width/4, 80);
+  text(scoreRight, width - width/4, 80);
 }
+
+function drawSpectator(x, y) {
+    let r = random(int(255));
+    let g = random(int(255));
+    let b = random(int(255));
+
+    if (random(100) < 50) {
+      random(fill(r, g, b));  
+      strokeWeight(1);
+        ellipse(x + random(-5,5), y + random(-5,5), 15); //bottom
+    } else {
+      random(fill(r, g, b));  
+      strokeWeight(1);  
+        rect(x - 7.5, y - 7.5, 15);  
+        }
+      }
+
+function Spectators() {
+  randomSeed(1);
+  let spacing = 20;
+  let fieldLeft = 300;
+  let fieldRight = width - 300;
+  let fieldTop = 120;
+  let fieldBottom = height - 120;
+
+  for (let y = fieldTop - 80; y > 0; y -= spacing) {
+    for (let x = fieldLeft; x < fieldRight; x += spacing) {
+      drawSpectator(x, y);
+    }
+  }
+
+  for (let y = fieldBottom + 80; y < height; y += spacing) {
+    for (let x = fieldLeft; x < fieldRight; x += spacing) {
+      drawSpectator(x, y);
+    }
+  }
+
+  for (let x = fieldLeft - 80; x > 0; x -= spacing) {
+    for (let y = fieldTop; y < fieldBottom; y += spacing) {
+      drawSpectator(x, y);
+    }
+  }
+
+  for (let x = fieldRight + 80; x < width; x += spacing) {
+    for (let y = fieldTop; y < fieldBottom; y += spacing) {
+      drawSpectator(x, y);
+    }
+  }
+>>>>>>> Stashed changes
 }
+
+
+
+
+
+
 
 function Spectators() {
   randomSeed(1);
@@ -204,6 +269,7 @@ class Ball {
     this.speedX = 6;
     this.speedY = 6;
     this.bounceCooldown = 0;
+    this.bounceCooldown2 = 0;
     this.position = this.x, this.y;
   }
 
@@ -242,6 +308,26 @@ class Ball {
 
 
 
+    //Checks for goals
+    if (this.x - this.diameter/2 <= 300) {
+      if (this.y >= height/2 - 120) {
+        if (this.y <= height/2 + 120) {
+          this.resetPosition();
+          scoreRight++;
+        }
+      }
+    }
+    if (this.x + this.diameter/2 >= width - 300) {
+      if (this.y >= height/2 - 120) {
+        if (this.y <= height/2 + 120){
+          this.resetPosition();
+          scoreLeft++;
+        }
+      }
+    }
+
+
+    
 
 
 
@@ -249,6 +335,9 @@ class Ball {
 
 
 
+
+
+    //puck
     if (this.bounceCooldown === 0) {
       let d = dist(this.x, this.y, puck.x, puck.y); //distance between the ball and puck
       let d2 = dist(this.x, this.y, puck2.x, puck2.y); //distance between the ball and puck
@@ -288,8 +377,46 @@ class Ball {
     }
 
 
+    //puck2
+    if (this.bounceCooldown === 0) {
+      let d2 = dist(this.x, this.y, puck2.x, puck2.y); //distance between the ball and puck
+      let combinedRadius2 = this.diameter / 2 + puck2.diameter / 2; //finds the combined radius which is 50
+
+      if (puck.speed > 0) {
+
+        if (d2 <= combinedRadius2) { //if
+          this.bounceCooldown2 = 5;
+          if (this.y <= puck2.y - puck2.diameter / 2) {
+            this.speedY *= -1;
+
+
+          } else {
+            this.speedX *= -1;
+            this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
+            if (this.speedX < 0) {
+              this.speedX -= 5;
+            }
+            if (this.speedY < 0) {
+              this.speedY -= 5;
+            }
+            if (this.speedX > 0) {
+              this.speedX += 5;
+            }
+            if (this.speedY > 0) {
+              this.speedY += 5;
+            }
+          }
+        }
+
+      }
+    } else {
+      this.bounceCooldown2 --;
+    }
+
+
 
   }
+<<<<<<< Updated upstream
     if (puck2.speed > 0) {
 
       if (d <= combinedRadius2) { //if
@@ -321,4 +448,13 @@ class Ball {
 }
 
   
+=======
+
+  resetPosition() {
+    this.x = width/2;
+    this.y = height/2;
+    this.speedX = random(-6, 6);
+    this.speedY = random(-6, 6);
+  }
+>>>>>>> Stashed changes
 }
