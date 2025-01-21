@@ -2,153 +2,41 @@
 // Luka Sullivan
 // December 10, 2024
 //
-
-let gameStarted = false;
+let cheer, bounce //declares variable for cheering and bouncing sound effect
+let gameStarted = false; //initial state is false
 let puck;
 let ball;
-let scoreLeft = 0;
-let scoreRight = 0;
+let scoreLeft = 0; //score starts at 0
+let scoreRight = 0; //score starts at 0
+
+// function preload() {
+//   cheer = loadSound("C:\Users\lukas\Downloads\Computer Science-20241201T190156Z-001\Computer Science\Repository-for-capstone\Capstone Project\assets\crowd-clapping-100071.mp3");
+//   bounce = loadSound("C:\Users\lukas\Downloads\Computer Science-20241201T190156Z-001\Computer Science\Repository-for-capstone\Capstone Project\assets\soccer-ball-kick-37625.mp3");
+// }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  puck2 = new Puck2();
-  puck = new Puck();
-  ball = new Ball();
-  if (!gameStarted) {
+  puck2 = new Puck2(); //initializes puck2
+  puck = new Puck(); //initializes puck
+  ball = new Ball(); //initializes ball
+  if (!gameStarted) { //when game isn't started, shows menu
     showMenu();
   }
 }
 
 function draw() {
   if (gameStarted) {
-    drawField();
-    Spectators();
-    displayScores();
-    puck.display();
-    puck.move();
-    puck2.display();
-    puck2.move();
-    ball.display();
-    ball.move();
+    drawField(); //draws the field
+    Spectators(); //draws the spectators
+    displayScores(); //shows the score
+    puck.display(); //displays puck
+    puck.move(); //moves puck
+    puck2.display(); //displays puck2
+    puck2.move(); //moves puck2
+    ball.display(); //displays ball
+    ball.move(); //moves ball
   }
 }
-
-<<<<<<< Updated upstream
-function Spectator(x, y) {
-  let r = random(int(255));
-  let g = random(int(255));
-  let b = random(int(255));
-
-    
-
-  //bottom
-  if (random(100) < 50) {
-    random(fill(r, g, b));  
-    strokeWeight(1);
-    ellipse(x + random(-3,3), y + random(-3,3), 15); //bottom
-
-  } else {
-    random(fill(r, g, b));  
-    strokeWeight(1);  
-    rect(x - 7.5 + random(-3,3), y - 7.5 + random(-3,3), 15);   //right
-=======
-function displayScores(){
-  fill(255);
-  textSize(50);
-  text(scoreLeft, width/4, 80);
-  text(scoreRight, width - width/4, 80);
-}
-
-function drawSpectator(x, y) {
-    let r = random(int(255));
-    let g = random(int(255));
-    let b = random(int(255));
-
-    if (random(100) < 50) {
-      random(fill(r, g, b));  
-      strokeWeight(1);
-        ellipse(x + random(-5,5), y + random(-5,5), 15); //bottom
-    } else {
-      random(fill(r, g, b));  
-      strokeWeight(1);  
-        rect(x - 7.5, y - 7.5, 15);  
-        }
-      }
-
-function Spectators() {
-  randomSeed(1);
-  let spacing = 20;
-  let fieldLeft = 300;
-  let fieldRight = width - 300;
-  let fieldTop = 120;
-  let fieldBottom = height - 120;
-
-  for (let y = fieldTop - 80; y > 0; y -= spacing) {
-    for (let x = fieldLeft; x < fieldRight; x += spacing) {
-      drawSpectator(x, y);
-    }
-  }
-
-  for (let y = fieldBottom + 80; y < height; y += spacing) {
-    for (let x = fieldLeft; x < fieldRight; x += spacing) {
-      drawSpectator(x, y);
-    }
-  }
-
-  for (let x = fieldLeft - 80; x > 0; x -= spacing) {
-    for (let y = fieldTop; y < fieldBottom; y += spacing) {
-      drawSpectator(x, y);
-    }
-  }
-
-  for (let x = fieldRight + 80; x < width; x += spacing) {
-    for (let y = fieldTop; y < fieldBottom; y += spacing) {
-      drawSpectator(x, y);
-    }
-  }
->>>>>>> Stashed changes
-}
-
-
-
-
-
-
-
-function Spectators() {
-  randomSeed(1);
-  let spacing = 20;
-  let fieldLeft = 300;
-  let fieldRight = width - 300;
-  let fieldTop = 120;
-  let fieldBottom = height - 120;
-
-  for (let y = fieldTop - 40; y > 0; y -= spacing) {
-    for (let x = fieldLeft; x < fieldRight; x += spacing) {
-      Spectator(x, y);
-    }
-  }
-
-  for (let y = fieldBottom + 40; y < height; y += spacing) {
-    for (let x = fieldLeft; x < fieldRight; x += spacing) {
-      Spectator(x, y);
-    }
-  }
-
-  for (let x = fieldLeft - 80; x > 0; x -= spacing) {
-    for (let y = fieldTop; y < fieldBottom; y += spacing) {
-      Spectator(x, y);
-    }
-  }
-
-  for (let x = fieldRight + 80; x < width; x += spacing) {
-    for (let y = fieldTop; y < fieldBottom; y += spacing) {
-      Spectator(x, y);
-    }
-  }
-}
-
-
 
 //creates the menu
 function showMenu() {
@@ -190,6 +78,70 @@ function drawField() {
   //creates center points
   ellipse(width / 2, height / 2, 7, 7);
 }
+
+//displays scores
+function displayScores(){
+  fill(255); //color is white
+  textSize(50); //text size of 50
+  text(scoreLeft, width/4, 80); //sets location of puck2's score display
+  text(scoreRight, width - width/4, 80); //sets location of puck's score display
+}
+
+//function for a spectator
+function Spectator(x, y) {
+  let r = random(int(255)); //random int for r
+  let g = random(int(255)); //random int for g
+  let b = random(int(255)); //random int for b
+
+  //bottom
+  if (random(100) < 50) { //if random number to 100 is less than 50
+    random(fill(r, g, b));  //fills random color
+    strokeWeight(1); //stroke weight is one 
+    ellipse(x + random(-3,3), y + random(-3,3), 15); //create a circle spectator
+
+  } else {
+    random(fill(r, g, b));  
+    strokeWeight(1);  
+    rect(x - 7.5 + random(-3,3), y - 7.5 + random(-3,3), 15); //creates a square spectator
+  }
+}
+
+function Spectators() {
+  randomSeed(1);
+  let spacing = 20; 
+  let fieldLeft = 300; //boundary of fieldLeft
+  let fieldRight = width - 300; //boundary of fieldRight
+  let fieldTop = 120; //boundary of fieldTop
+  let fieldBottom = height - 120; //boundary of fieldBottom
+
+  //loop to draw spectators on the top side of the field
+  for (let y = fieldTop - 80; y > 0; y -= spacing) {
+    for (let x = fieldLeft; x < fieldRight; x += spacing) {
+      Spectator(x, y);
+    }
+  }
+  //loop to draw spectators on the bottom side of the field  
+  for (let y = fieldBottom + 40; y < height; y += spacing) {
+    for (let x = fieldLeft; x < fieldRight; x += spacing) {
+      Spectator(x, y);
+    }
+  }
+
+  //loop to draw spectators on the left side of the field
+  for (let x = fieldLeft - 80; x > 0; x -= spacing) {
+    for (let y = fieldTop; y < fieldBottom; y += spacing) {
+      Spectator(x, y);
+    }
+  }
+
+  //loop to draw spectators on the right side of the field
+  for (let x = fieldRight + 80; x < width; x += spacing) {
+    for (let y = fieldTop; y < fieldBottom; y += spacing) {
+      Spectator(x, y);
+    }
+  }
+}
+
 
 class Puck {
   constructor() {
@@ -266,8 +218,8 @@ class Ball {
     this.x = width / 2;
     this.y = height / 2;
     this.diameter = 40;
-    this.speedX = 6;
-    this.speedY = 6;
+    this.speedX = random(-6, 6);
+    this.speedY = random(-6, 6);
     this.bounceCooldown = 0;
     this.bounceCooldown2 = 0;
     this.position = this.x, this.y;
@@ -289,10 +241,8 @@ class Ball {
 
 
     if (this.x - this.diameter / 2 <= 300) { //if the ball is going past the left vertical line
-      if (this.y - this.diameter/2 <= height - 300) {
         this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
       }
-    }
 
     if (this.x + this.diameter / 2 >= width - 300) { //if the ball is going past the right vertical line
       this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
@@ -340,10 +290,9 @@ class Ball {
     //puck
     if (this.bounceCooldown === 0) {
       let d = dist(this.x, this.y, puck.x, puck.y); //distance between the ball and puck
-      let d2 = dist(this.x, this.y, puck2.x, puck2.y); //distance between the ball and puck
 
       let combinedRadius = this.diameter / 2 + puck.diameter / 2; //finds the combined radius which is 50
-      let combinedRadius2 = this.diameter / 2 + puck2.diameter / 2; //finds the combined radius which is 50
+      
 
       if (puck.speed > 0) {
 
@@ -416,45 +365,12 @@ class Ball {
 
 
   }
-<<<<<<< Updated upstream
-    if (puck2.speed > 0) {
-
-      if (d <= combinedRadius2) { //if
-        this.bounceCooldown = 5;
-        if (this.y <= puck2.y - puck2.diameter / 2) {
-          this.speedY *= -1;
 
 
-        } else {
-          this.speedX *= -1;
-          this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
-          if (this.speedX < 0) {
-            this.speedX -= 5;
-          }
-          if (this.speedY < 0) {
-            this.speedY -= 5;
-          }
-          if (this.speedX > 0) {
-            this.speedX += 5;
-          }
-          if (this.speedY > 0) {
-            this.speedY += 5;
-          }
-        }
-
-  } else {
-    this.bounceCooldown --;
+resetPosition() {
+  this.x = width/2;
+  this.y = height/2;
+  this.speedX = random(-6, 6);
+  this.speedY = random(-6, 6);
   }
-}
-
-  
-=======
-
-  resetPosition() {
-    this.x = width/2;
-    this.y = height/2;
-    this.speedX = random(-6, 6);
-    this.speedY = random(-6, 6);
-  }
->>>>>>> Stashed changes
 }
