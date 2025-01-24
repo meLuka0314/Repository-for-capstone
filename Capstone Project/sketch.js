@@ -1,18 +1,20 @@
 // Captone project
 // Luka Sullivan
-// December 10, 2024
-//
-let cheer, bounce //declares variable for cheering and bouncing sound effect
+// January 23, 2025
+// Puck soccer is game that combines ellements  of soccer and hockey. Who ever scores 5 goals first wins.
+// P1 uses the arrow keys and P2 uses AWSD to control the puck.
+
+let clap, bounce; //declares variable for cheering and bouncing sound effect
 let gameStarted = false; //initial state is false
 let puck;
 let ball;
 let scoreLeft = 0; //score starts at 0
 let scoreRight = 0; //score starts at 0
 
-// function preload() {
-//   cheer = loadSound("C:\Users\lukas\Downloads\Computer Science-20241201T190156Z-001\Computer Science\Repository-for-capstone\Capstone Project\assets\crowd-clapping-100071.mp3");
-//   bounce = loadSound("C:\Users\lukas\Downloads\Computer Science-20241201T190156Z-001\Computer Science\Repository-for-capstone\Capstone Project\assets\soccer-ball-kick-37625.mp3");
-// }
+function preload() {
+  clap = loadSound("assets/clap.mp3"); //loads clap sound effect
+  bounce = loadSound("assets/bounce.mp3"); //loads bounce sound effect
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -25,7 +27,7 @@ function setup() {
 }
 
 function draw() {
-  if (gameStarted) {
+  if (gameStarted) { //if game started
     drawField(); //draws the field
     Spectators(); //draws the spectators
     displayScores(); //shows the score
@@ -95,12 +97,13 @@ function Spectator(x, y) {
 
   //bottom
   if (random(100) < 50) { //if random number to 100 is less than 50
-    random(fill(r, g, b));  //fills random color
+    fill(r, g, b);  //fills random color
     strokeWeight(1); //stroke weight is one 
     ellipse(x + random(-3,3), y + random(-3,3), 15); //create a circle spectator
+    //adds random spacing from -3 to 3
 
   } else {
-    random(fill(r, g, b));  
+    fill(r, g, b);  
     strokeWeight(1);  
     rect(x - 7.5 + random(-3,3), y - 7.5 + random(-3,3), 15); //creates a square spectator
   }
@@ -115,29 +118,29 @@ function Spectators() {
   let fieldBottom = height - 120; //boundary of fieldBottom
 
   //loop to draw spectators on the top side of the field
-  for (let y = fieldTop - 80; y > 0; y -= spacing) {
-    for (let x = fieldLeft; x < fieldRight; x += spacing) {
-      Spectator(x, y);
+  for (let y = fieldTop - 80; y > 0; y -= spacing) { //loops through y position starting above the fields top boundary, decreasing by spacing
+    for (let x = fieldLeft; x < fieldRight; x += spacing) { //loops through x position from the left to the right boundary
+      Spectator(x, y); //draws a spectator at (x,y) position
     }
   }
   //loop to draw spectators on the bottom side of the field  
-  for (let y = fieldBottom + 40; y < height; y += spacing) {
-    for (let x = fieldLeft; x < fieldRight; x += spacing) {
-      Spectator(x, y);
+  for (let y = fieldBottom + 40; y < height; y += spacing) { //loops through y position starting below the fields bottom boundary, increasing by spacing
+    for (let x = fieldLeft; x < fieldRight; x += spacing) { //loops through x position from the left to the right boundary
+      Spectator(x, y); //draws a spectator at (x,y) position
     }
   }
 
   //loop to draw spectators on the left side of the field
-  for (let x = fieldLeft - 80; x > 0; x -= spacing) {
-    for (let y = fieldTop; y < fieldBottom; y += spacing) {
-      Spectator(x, y);
+  for (let x = fieldLeft - 80; x > 0; x -= spacing) { //loops through x position starting left of the fields left boundary, decreasing by spacing
+    for (let y = fieldTop; y < fieldBottom; y += spacing) { //loops through y position from the top to the bottom boundary of the field
+      Spectator(x, y); //draws a spectator at (x,y) position
     }
   }
 
   //loop to draw spectators on the right side of the field
-  for (let x = fieldRight + 80; x < width; x += spacing) {
-    for (let y = fieldTop; y < fieldBottom; y += spacing) {
-      Spectator(x, y);
+  for (let x = fieldRight + 80; x < width; x += spacing) { //loops through x position starting right of the fields right boundary, decreasing by spacing
+    for (let y = fieldTop; y < fieldBottom; y += spacing) {  //loops through y position from the top to the bottom boundary of the field
+      Spectator(x, y); //draws a spectator at (x,y) position
     }
   }
 }
@@ -145,45 +148,44 @@ function Spectators() {
 
 class Puck {
   constructor() {
-    this.x = width - 400;
-    this.y = height / 2;
-    this.diameter = 60;
-    this.speed = 4;
+    this.x = width - 400; //starting x position of puck
+    this.y = height / 2; //starting y position of puck
+    this.diameter = 60; //sets diameter of puck
+    this.speed = 5; //sets speed of puck
   }
 
   display() {
-    fill(200, 0, 0);
-    strokeWeight(4);
-    ellipse(this.x, this.y, this.diameter);
+    fill(200, 0, 0); //red
+    strokeWeight(4); //sets stroke thickness 
+    ellipse(this.x, this.y, this.diameter); //draws puck
   }
 
   move() {
-    if (keyIsDown(LEFT_ARROW)) {
-      this.x -= this.speed + 0.5;
+    if (keyIsDown(LEFT_ARROW)) { //checks if left arrow key is pressed
+      this.x -= this.speed + 0.5; //goes left
     }
 
-    if (keyIsDown(RIGHT_ARROW)) {
-      this.x += this.speed + 0.5;
+    if (keyIsDown(RIGHT_ARROW)) { //checks if right arrow key is pressed
+      this.x += this.speed + 0.5; //goes right
     }
 
-    if (keyIsDown(UP_ARROW)) {
-      this.y -= this.speed;
+    if (keyIsDown(UP_ARROW)) { //checks if up arrow key is pressed
+      this.y -= this.speed; //goes up
     }
 
-    if (keyIsDown(DOWN_ARROW)) {
-      this.y += this.speed;
+    if (keyIsDown(DOWN_ARROW)) { //checks if down arrow key is pressed
+      this.y += this.speed; //goes down
     }
   }
-
-
 }
 
+//the same as puck but different starting position and keys
 class Puck2 {
   constructor() {
     this.x = width / 5;
     this.y = height / 2;
     this.diameter = 60;
-    this.speed = 4;
+    this.speed = 5;
   }
 
   display() {
@@ -193,24 +195,22 @@ class Puck2 {
   }
 
   move() {
-    if (keyIsDown(65)) {
-      this.x -= this.speed + 0.5;
+    if (keyIsDown(65)) { //if A key is pressed
+      this.x -= this.speed + 0.5; //goes left
     }
 
-    if (keyIsDown(68)) {
-      this.x += this.speed + 0.5;
+    if (keyIsDown(68)) { //if D key is pressed
+      this.x += this.speed + 0.5; //goes right
     }
 
-    if (keyIsDown(87)) {
-      this.y -= this.speed;
+    if (keyIsDown(87)) { //if W key is pressed
+      this.y -= this.speed; //goes up
     }
 
-    if (keyIsDown(83)) {
-      this.y += this.speed;
+    if (keyIsDown(83)) { //if S key is pressed
+      this.y += this.speed; //goes down
     }
   }
-
-
 }
 
 class Ball {
@@ -218,11 +218,9 @@ class Ball {
     this.x = width / 2;
     this.y = height / 2;
     this.diameter = 40;
-    this.speedX = random(-6, 6);
-    this.speedY = random(-6, 6);
-    this.bounceCooldown = 0;
-    this.bounceCooldown2 = 0;
-    this.position = this.x, this.y;
+    this.speedX = random(-6, 6); //sets SpeedX value as random of -6 to 6 to go to a random direction
+    this.speedY = random(-6, 6); //sets SpeedY value as random of -6 to 6 to go to a random direction
+    this.bounceCooldown = 0; //cooldown timer to prevent continous collisions with the puck
   }
 
   display() {
@@ -235,142 +233,102 @@ class Ball {
     this.x += this.speedX;
     this.y += this.speedY;
 
+    //recreates friction by continously slowing down the x and y speed slowly
     this.speedX *= 0.99;
     this.speedY *= 0.99;
 
-
-
+    //field boundaries so the ball doesnt get out
     if (this.x - this.diameter / 2 <= 300) { //if the ball is going past the left vertical line
         this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
+        bounce.play(); //plays a sound of the ball bouncing
       }
 
     if (this.x + this.diameter / 2 >= width - 300) { //if the ball is going past the right vertical line
       this.speedX *= -1; //switches the direction to the opposite way by making the speed nagative
+      bounce.play(); //plays a sound of the ball bouncing
     }
 
     if (this.y - this.diameter / 2 <= 120) { //if the ball is going past the top horizontal line
       this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
+      bounce.play(); //plays a sound of the ball bouncing
     }
 
     if (this.y + this.diameter / 2 >= height - 120) { //if the ball is going past the bottom horizontal line
       this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
+      bounce.play(); //plays a sound of the ball bouncing
     }
 
-
-
     //Checks for goals
+    //if ball touches the left goal line
     if (this.x - this.diameter/2 <= 300) {
       if (this.y >= height/2 - 120) {
         if (this.y <= height/2 + 120) {
-          this.resetPosition();
-          scoreRight++;
+          this.resetPosition(); //resets position
+          scoreRight++; //adds score to puck1
+        }          
+        if (scoreRight === 5) { //if Puck1s score is 5
+          gameStarted = false; //stops the game so that the game doesnt interfere
+          showMenu(); //shows menu
+          scoreLeft = 0;
+          scoreRight = 0;
         }
       }
     }
+
+    //if ball touches the right goal line
     if (this.x + this.diameter/2 >= width - 300) {
       if (this.y >= height/2 - 120) {
         if (this.y <= height/2 + 120){
-          this.resetPosition();
-          scoreLeft++;
-        }
-      }
-    }
-
-
-    
-
-
-
-
-
-
-
-
-
-    //puck
-    if (this.bounceCooldown === 0) {
-      let d = dist(this.x, this.y, puck.x, puck.y); //distance between the ball and puck
-
-      let combinedRadius = this.diameter / 2 + puck.diameter / 2; //finds the combined radius which is 50
-      
-
-      if (puck.speed > 0) {
-
-        if (d <= combinedRadius) { //if
-          this.bounceCooldown = 5;
-          if (this.y <= puck.y - puck.diameter / 2) {
-            this.speedY *= -1;
-
-
-          } else {
-            this.speedX *= -1;
-            this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
-            if (this.speedX < 0) {
-              this.speedX -= 5;
-            }
-            if (this.speedY < 0) {
-              this.speedY -= 5;
-            }
-            if (this.speedX > 0) {
-              this.speedX += 5;
-            }
-            if (this.speedY > 0) {
-              this.speedY += 5;
-            }
+          this.resetPosition(); //resets position
+          scoreLeft++; //adds score to puck2
+          if (scoreLeft === 5) { //if puck2s score is 5
+            gameStarted = false; //stops the game so that the game doesnt interfere
+            showMenu();//shows menu
+            scoreLeft = 0;
+            scoreRight = 0;
           }
         }
-
       }
-    } else {
-      this.bounceCooldown --;
     }
-
-
-    //puck2
-    if (this.bounceCooldown === 0) {
-      let d2 = dist(this.x, this.y, puck2.x, puck2.y); //distance between the ball and puck
-      let combinedRadius2 = this.diameter / 2 + puck2.diameter / 2; //finds the combined radius which is 50
-
-      if (puck.speed > 0) {
-
-        if (d2 <= combinedRadius2) { //if
-          this.bounceCooldown2 = 5;
-          if (this.y <= puck2.y - puck2.diameter / 2) {
-            this.speedY *= -1;
-
-
-          } else {
-            this.speedX *= -1;
-            this.speedY *= -1; //switches the direction to the opposite way by making the speed nagative
-            if (this.speedX < 0) {
-              this.speedX -= 5;
-            }
-            if (this.speedY < 0) {
-              this.speedY -= 5;
-            }
-            if (this.speedX > 0) {
-              this.speedX += 5;
-            }
-            if (this.speedY > 0) {
-              this.speedY += 5;
-            }
-          }
-        }
-
-      }
-    } else {
-      this.bounceCooldown2 --;
-    }
-
-
-
+    this.CheckCollisionPuck(puck); //checks for collision between puck1 and ball
+    this.CheckCollisionPuck(puck2); //checks for collision between puck2 and ball
   }
 
+  //checks for collision
+  CheckCollisionPuck(puck) {
+    if (this.bounceCooldown === 0) { //makes sure there is no cool down
+      let d = dist(this.x, this.y, puck.x, puck.y); //distance between the ball and puck
+      let combinedRadius = this.diameter / 2 + puck.diameter / 2; //finds the combined radius of ball and puck
 
-resetPosition() {
-  this.x = width/2;
-  this.y = height/2;
-  this.speedX = random(-6, 6);
-  this.speedY = random(-6, 6);
+      //checks if the ball and puck are in a collision
+      if (d <= combinedRadius) { //if the distance is smaller than the combined radius then their overlapping and if its equal their hitting 
+        this.bounceCooldown = 5; //sets cooldown to avoid many collisions over a short period of time
+        //calculates the relative position
+        //if positive, it goes right
+        //if negative, it goes left
+        this.speedX = (this.x - puck.x) * 0.3; 
+        //if positive, it goes down
+        //if negative, it goes up
+        this.speedY = (this.y - puck.y) * 0.3; 
+        bounce.play(); //plays the sound of the ball bouncing
+      }
+    } else {
+      this.bounceCooldown --; //decreases the cooldown timer
+    }
+  }
+
+  resetPosition() {
+    //resets ball position
+    this.x = width/2;
+    this.y = height/2;
+    //resets puck1s position
+    puck.x = width - width/4;
+    puck.y = height/2;
+    //resets puck2s position
+    puck2.x = width/4;
+    puck2.y = height/2;
+    this.speedX = random(-6, 6); //sets SpeedX value as random of -6 to 6 to go to a random direction
+    this.speedY = random(-6, 6); //sets SpeedY value as random of -6 to 6 to go to a random direction
+    clap.play(); //plays sound of the crowd clapping 
   }
 }
